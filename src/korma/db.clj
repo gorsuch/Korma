@@ -61,13 +61,17 @@
 (defn postgres 
   "Create a database specification for a postgres database. Opts should include keys
   for :db, :user, and :password. You can also optionally set host and port."
-  [{:keys [host port db] :as opts}]
+  [{:keys [host port db ssl] :as opts}]
   (let [host (or host "localhost")
         port (or port 5432)
-        db (or db "")]
+        db (or db "")
+        ssl (true? ssl)
+        query-string (if (false? ssl)
+                       ""
+                       "?ssl=true")]
   (merge {:classname "org.postgresql.Driver" ; must be in classpath
           :subprotocol "postgresql"
-          :subname (str "//" host ":" port "/" db)} 
+          :subname (str "//" host ":" port "/" db query-string)} 
          opts)))
 
 (defn oracle 
