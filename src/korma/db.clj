@@ -68,7 +68,7 @@
         ssl (true? ssl)
         query-string (if (false? ssl)
                        ""
-                       "?ssl=true")]
+                       "?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory")]
   (merge {:classname "org.postgresql.Driver" ; must be in classpath
           :subprotocol "postgresql"
           :subname (str "//" host ":" port "/" db query-string)} 
